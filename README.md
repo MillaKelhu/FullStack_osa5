@@ -1,1 +1,1 @@
-Tästä hakemistosta löytyvät osan 5 tehtävien 5.1-5.4 react-kodi
+Tästä hakemistosta löytyvät osan 5 tehtävien 5.1-5.5 react-kodi
