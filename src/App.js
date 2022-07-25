@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Notification from './components/Notification'
+import ErrorNotification from './components/ErrorNotification'
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -11,6 +13,8 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const blogHook = () => {
     blogService.getAll().then(blogs =>
@@ -44,6 +48,8 @@ const App = () => {
       setPassword('')
     } catch (exception) {
       console.log('error in login')
+      setErrorMessage('wrong username or password')
+      errorTimeout()
     }
   }
 
@@ -65,15 +71,33 @@ const App = () => {
       setTitle('')
       setAuthor('')
       setUrl('')
+      setNotificationMessage(`a new blog ${title} by ${author} added`)
+      notificationTimeout()
       blogHook()
     } catch (exception) {
       console.log('error in creating a new blog')
+      setErrorMessage(`couldn't create a blog ${title} by ${author}`)
+      errorTimeout()
     }
+  }
+
+  const notificationTimeout = () => {
+    setTimeout(() => {
+      setNotificationMessage(null)
+    }, 5000)
+  }
+
+  const errorTimeout = () => {
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
   }
 
   if (user === null) {
     return (
       <div>
+        <Notification message={notificationMessage}/>
+        <ErrorNotification message={errorMessage}/>
         <h2>Log in to application</h2>
         <form onSubmit={handleLogin} autoComplete="off">
           <div>
@@ -104,6 +128,8 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={notificationMessage}/>
+      <ErrorNotification message={errorMessage}/>
       <h2>blogs</h2>
       <p>
         {user.name} logged in
