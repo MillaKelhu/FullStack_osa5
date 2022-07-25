@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import ErrorNotification from './components/ErrorNotification'
+import CreateBlogForm from './components/CreateBlogForm'
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -15,6 +16,7 @@ const App = () => {
   const [url, setUrl] = useState('')
   const [notificationMessage, setNotificationMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [createBlogVisible, setCreateBlogVisible] = useState(false)
 
   const blogHook = () => {
     blogService.getAll().then(blogs =>
@@ -73,6 +75,7 @@ const App = () => {
       setUrl('')
       setNotificationMessage(`a new blog ${title} by ${author} added`)
       notificationTimeout()
+      setCreateBlogVisible(false)
       blogHook()
     } catch (exception) {
       console.log('error in creating a new blog')
@@ -91,6 +94,33 @@ const App = () => {
     setTimeout(() => {
       setErrorMessage(null)
     }, 5000)
+  }
+
+  const createBlogForm = () => {
+    const hideWhenVisible = {display: createBlogVisible ? 'none' : ''}
+    const showWhenVisible = {display: createBlogVisible ? '' : 'none'}
+
+    return (
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setCreateBlogVisible(true)}>create new blog</button>
+        </div>
+        <div style={showWhenVisible}>
+          <CreateBlogForm
+            handleCreateBlog={handleCreateBlog}
+            title={title}
+            setTitle={setTitle}
+            author={author}
+            setAuthor={setAuthor}
+            url={url}
+            setUrl={setUrl}
+          />
+          <button onClick={() => setCreateBlogVisible(false)}>
+            cancel
+          </button>
+        </div>
+      </div>
+    )
   }
 
   if (user === null) {
@@ -137,39 +167,7 @@ const App = () => {
           logout
         </button>
       </p>
-      <h2>create</h2>
-      <form onSubmit={handleCreateBlog} autoComplete="off">
-        <div>
-          title:
-          <input
-          type="text"
-          value={title}
-          name="Title"
-          onChange={({target}) => setTitle(target.value)}
-          />
-        </div>
-        <div>
-          author:
-          <input
-          type="text"
-          value={author}
-          name="Author"
-          onChange={({target}) => setAuthor(target.value)}
-          />
-        </div>
-        <div>
-          url:
-          <input
-          type="text"
-          value={url}
-          name="Url"
-          onChange={({target}) => setUrl(target.value)}
-          />
-        </div>
-        <button type="submit">
-          create
-        </button>
-      </form>
+      {createBlogForm()}
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
