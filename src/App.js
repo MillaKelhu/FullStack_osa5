@@ -11,9 +11,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [blogs, setBlogs] = useState([])
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [notificationMessage, setNotificationMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [createBlogVisible, setCreateBlogVisible] = useState(false)
@@ -62,25 +59,21 @@ const App = () => {
     setUser(null)
   }
 
-  const handleCreateBlog = async (event) => {
-    event.preventDefault()
-
-    console.log('create button pushed')
+  const addBlog = async (title, author, url) => {
     try {
       const blog = await blogService.create({
         title, author, url
       })
-      setTitle('')
-      setAuthor('')
-      setUrl('')
       setNotificationMessage(`a new blog ${title} by ${author} added`)
       notificationTimeout()
       setCreateBlogVisible(false)
       blogHook()
+      return true
     } catch (exception) {
       console.log('error in creating a new blog')
       setErrorMessage(`couldn't create a blog ${title} by ${author}`)
       errorTimeout()
+      return false
     }
   }
 
@@ -107,13 +100,7 @@ const App = () => {
         </div>
         <div style={showWhenVisible}>
           <CreateBlogForm
-            handleCreateBlog={handleCreateBlog}
-            title={title}
-            setTitle={setTitle}
-            author={author}
-            setAuthor={setAuthor}
-            url={url}
-            setUrl={setUrl}
+            createBlog={addBlog}
           />
           <button onClick={() => setCreateBlogVisible(false)}>
             cancel
