@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 
-const Blog = ({blog}) => {
+const Blog = ({blog, likeBlog}) => {
   const [blogInfoVisible, setBlogInfoVisible] = useState(false)
 
-  const handleLike = () => {
+  const handleLike = async () => {
     console.log(`${blog.title} like pressed`)
+
+    const blogLiked = await likeBlog(blog)
   }
 
   const hideWhenVisible = {display: blogInfoVisible ? 'none' : ''}

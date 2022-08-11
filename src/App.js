@@ -92,6 +92,26 @@ const App = () => {
     blogHook()
   }
 
+  const likeBlog = async (blog) => {
+    const updatedInfo = {
+      id: blog.id,
+      user: blog.user.id,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url,
+      likes: blog.likes + 1
+    }
+    console.log(updatedInfo)
+    try {
+      const blogLiked = await blogService.like(updatedInfo)
+      blogHook()
+    } catch (exception) {
+      console.log('error in liking blog')
+      setErrorMessage(`couldn't like blog ${blog.title}`)
+      errorTimeout()
+    }
+  }
+
   const createBlogForm = () => {
     const hideWhenVisible = {display: createBlogVisible ? 'none' : ''}
     const showWhenVisible = {display: createBlogVisible ? '' : 'none'}
@@ -160,7 +180,7 @@ const App = () => {
       </p>
       {createBlogForm()}
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} likeBlog={likeBlog}/>
       )}
     </div>
   )
