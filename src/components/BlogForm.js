@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 
-const CreateBlogForm = ({
-    createBlog
+const BlogForm = ({
+    createBlog,
+    blogCreated
 }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -11,11 +12,12 @@ const CreateBlogForm = ({
     event.preventDefault()
 
     console.log('create button pushed')
-    const blogCreated = createBlog(title, author, url)
-    if (blogCreated === true) {
+    const newBlog = await createBlog(title, author, url)
+    if (newBlog === true) {
       setTitle('')
       setAuthor('')
       setUrl('')
+      blogCreated(title, author)
     }
   }
 
@@ -58,4 +60,4 @@ const CreateBlogForm = ({
   )
 }
 
-export default CreateBlogForm
+export default BlogForm

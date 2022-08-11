@@ -4,7 +4,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import ErrorNotification from './components/ErrorNotification'
-import CreateBlogForm from './components/CreateBlogForm'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -64,10 +64,6 @@ const App = () => {
       const blog = await blogService.create({
         title, author, url
       })
-      setNotificationMessage(`a new blog ${title} by ${author} added`)
-      notificationTimeout()
-      setCreateBlogVisible(false)
-      blogHook()
       return true
     } catch (exception) {
       console.log('error in creating a new blog')
@@ -89,6 +85,13 @@ const App = () => {
     }, 5000)
   }
 
+  const blogCreated = (title, author) => {
+    setNotificationMessage(`a new blog ${title} by ${author} added`)
+    notificationTimeout()
+    setCreateBlogVisible(false)
+    blogHook()
+  }
+
   const createBlogForm = () => {
     const hideWhenVisible = {display: createBlogVisible ? 'none' : ''}
     const showWhenVisible = {display: createBlogVisible ? '' : 'none'}
@@ -99,8 +102,9 @@ const App = () => {
           <button onClick={() => setCreateBlogVisible(true)}>create new blog</button>
         </div>
         <div style={showWhenVisible}>
-          <CreateBlogForm
+          <BlogForm
             createBlog={addBlog}
+            blogCreated={blogCreated}
           />
           <button onClick={() => setCreateBlogVisible(false)}>
             cancel
