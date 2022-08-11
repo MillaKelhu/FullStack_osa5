@@ -15,6 +15,12 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [createBlogVisible, setCreateBlogVisible] = useState(false)
 
+  const compareLikes = (blogA, blogB) => {
+    return blogB.likes - blogA.likes
+  }
+
+  const sortedBlogs = blogs.sort(compareLikes)
+
   const blogHook = () => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
@@ -179,7 +185,7 @@ const App = () => {
         </button>
       </p>
       {createBlogForm()}
-      {blogs.map(blog =>
+      {sortedBlogs.map(blog =>
         <Blog key={blog.id} blog={blog} likeBlog={likeBlog}/>
       )}
     </div>
