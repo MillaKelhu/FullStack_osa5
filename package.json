@@ -9,7 +9,7 @@
       "lint": "eslint .",
       "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit"
     },
-    "author": "",
+    "author": "Milla Kelhu",
     "license": "ISC",
     "dependencies": {
       "bcrypt": "^5.0.1",
