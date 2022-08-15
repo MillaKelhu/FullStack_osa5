@@ -107,14 +107,27 @@ const App = () => {
       url: blog.url,
       likes: blog.likes + 1
     }
-    console.log(updatedInfo)
     try {
-      const blogLiked = await blogService.like(updatedInfo)
+      await blogService.like(updatedInfo)
       blogHook()
     } catch (exception) {
       console.log('error in liking blog')
       setErrorMessage(`couldn't like blog ${blog.title}`)
       errorTimeout()
+    }
+  }
+
+  const deleteBlog = async (blog) => {
+    const message = `Remove blog ${blog.name} by ${blog.author}`
+    if (window.confirm(message)) {
+      try {
+        console.log('attempting to remove blog')
+        await blogService.remove({blog})
+        blogHook()
+      } catch (exception) {
+        setErrorMessage(`couldn't delete blog ${blog.title}`)
+        errorTimeout()
+      }
     }
   }
 
@@ -180,13 +193,18 @@ const App = () => {
       <h2>blogs</h2>
       <p>
         {user.name} logged in
-        <button onClick={handleLogout}>
+        <button class='button' onClick={handleLogout}>
           logout
         </button>
       </p>
       {createBlogForm()}
       {sortedBlogs.map(blog =>
-        <Blog key={blog.id} blog={blog} likeBlog={likeBlog}/>
+        <Blog
+        key={blog.id}
+        blog={blog}
+        likeBlog={likeBlog}
+        loggedUser={user}
+        deleteBlog={deleteBlog}/>
       )}
     </div>
   )

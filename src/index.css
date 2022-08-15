@@ -22,4 +22,13 @@
     border-color: darkgray;
     border-width: 1px;
     margin-bottom: 5px;
+    line-height: 1.5;
+}
+
+.button {
+ margin-left: 5px;
+}
+
+.deletebutton {
+    background-color: red;
 }
