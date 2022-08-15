@@ -67,7 +67,7 @@ const App = () => {
 
   const addBlog = async (title, author, url) => {
     try {
-      const blog = await blogService.create({
+      await blogService.create({
         title, author, url
       })
       return true
@@ -122,7 +122,7 @@ const App = () => {
     if (window.confirm(message)) {
       try {
         console.log('attempting to remove blog')
-        await blogService.remove({blog})
+        await blogService.remove({ blog })
         blogHook()
       } catch (exception) {
         setErrorMessage(`couldn't delete blog ${blog.title}`)
@@ -132,8 +132,8 @@ const App = () => {
   }
 
   const createBlogForm = () => {
-    const hideWhenVisible = {display: createBlogVisible ? 'none' : ''}
-    const showWhenVisible = {display: createBlogVisible ? '' : 'none'}
+    const hideWhenVisible = { display: createBlogVisible ? 'none' : '' }
+    const showWhenVisible = { display: createBlogVisible ? '' : 'none' }
 
     return (
       <div>
@@ -146,7 +146,7 @@ const App = () => {
             blogCreated={blogCreated}
           />
           <button onClick={() => setCreateBlogVisible(false)}>
-            cancel
+                      cancel
           </button>
         </div>
       </div>
@@ -161,25 +161,25 @@ const App = () => {
         <h2>Log in to application</h2>
         <form onSubmit={handleLogin} autoComplete="off">
           <div>
-            username
+                        username
             <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({target}) => setUsername(target.value)}
+              type="text"
+              value={username}
+              name="Username"
+              onChange={({ target }) => setUsername(target.value)}
             />
           </div>
           <div>
-            password
+                        password
             <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({target}) => setPassword(target.value)}
+              type="password"
+              value={password}
+              name="Password"
+              onChange={({ target }) => setPassword(target.value)}
             />
           </div>
           <button type="submit">
-            login
+                        login
           </button>
         </form>
       </div>
@@ -194,18 +194,18 @@ const App = () => {
       <p>
         {user.name} logged in
         <button className='button' onClick={handleLogout}>
-          logout
+                    logout
         </button>
       </p>
       {createBlogForm()}
       {sortedBlogs.map(blog =>
         <Blog
-        key={blog.id}
-        blog={blog}
-        likeBlog={likeBlog}
-        loggedUser={user}
-        deleteBlog={deleteBlog}
-      />
+          key={blog.id}
+          blog={blog}
+          likeBlog={likeBlog}
+          loggedUser={user}
+          deleteBlog={deleteBlog}
+        />
       )}
     </div>
   )

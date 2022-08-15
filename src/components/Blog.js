@@ -1,4 +1,4 @@
-import { useState, useEffect, forwardRef } from 'react'
+import { useState, forwardRef } from 'react'
 import PropTypes from 'prop-types'
 
 const Blog = forwardRef((props, ref) => {
@@ -21,7 +21,7 @@ const Blog = forwardRef((props, ref) => {
       return (
         <div>
           <button className='deletebutton' onClick={handleDelete}>
-            remove
+              remove
           </button>
         </div>
       )
@@ -29,31 +29,31 @@ const Blog = forwardRef((props, ref) => {
     return
   }
 
-  const hideInfoWhenVisible = {display: blogInfoVisible ? 'none' : ''}
-  const showInfoWhenVisible = {display: blogInfoVisible ? '' : 'none'}
+  const hideInfoWhenVisible = { display: blogInfoVisible ? 'none' : '' }
+  const showInfoWhenVisible = { display: blogInfoVisible ? '' : 'none' }
 
   return (
     <div className='blog'>
       <div style={hideInfoWhenVisible}>
         {blog.title} {blog.author}
         <button className='button' onClick={() => setBlogInfoVisible(true)}>
-          view
+            view
         </button>
       </div>
       <div style={showInfoWhenVisible}>
         <div>
           {blog.title} {blog.author}
           <button className='button' onClick={() => setBlogInfoVisible(false)}>
-            hide
+              hide
           </button>
         </div>
         <div>
           {blog.url}
         </div>
         <div>
-          likes {blog.likes}
-          <button class='button' onClick={handleLike}>
-            like
+            likes {blog.likes}
+          <button className='button' onClick={handleLike}>
+              like
           </button>
         </div>
         {createDeleteButton()}
