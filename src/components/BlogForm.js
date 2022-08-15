@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, forwardRef } from 'react'
+import PropTypes from 'prop-types'
 
-const BlogForm = ({
-    createBlog,
-    blogCreated
-}) => {
+const BlogForm = forwardRef((props, ref) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -12,12 +10,12 @@ const BlogForm = ({
     event.preventDefault()
 
     console.log('create button pushed')
-    const newBlog = await createBlog(title, author, url)
+    const newBlog = await props.createBlog(title, author, url)
     if (newBlog === true) {
       setTitle('')
       setAuthor('')
       setUrl('')
-      blogCreated(title, author)
+      props.blogCreated(title, author)
     }
   }
 
@@ -58,6 +56,11 @@ const BlogForm = ({
           </form>
       </div>
   )
+})
+
+BlogForm.propTypes = {
+  createBlog: PropTypes.func.isRequired,
+  blogCreated: PropTypes.func.isRequired
 }
 
 export default BlogForm
