@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, forwardRef } from 'react'
+import PropTypes from 'prop-types'
 
-const Blog = ({blog, likeBlog, loggedUser, deleteBlog}) => {
+const Blog = forwardRef((props, ref) => {
   const [blogInfoVisible, setBlogInfoVisible] = useState(false)
+  const [blog, likeBlog, loggedUser, deleteBlog] = [props.blog, props.likeBlog, props.loggedUser, props.deleteBlog]
 
   const handleLike = async () => {
     console.log(`${blog.title} like pressed`)
@@ -18,7 +20,7 @@ const Blog = ({blog, likeBlog, loggedUser, deleteBlog}) => {
     if (blog.user.id === loggedUser.id) {
       return (
         <div>
-          <button class='deletebutton' onClick={handleDelete}>
+          <button className='deletebutton' onClick={handleDelete}>
             remove
           </button>
         </div>
@@ -34,14 +36,14 @@ const Blog = ({blog, likeBlog, loggedUser, deleteBlog}) => {
     <div className='blog'>
       <div style={hideInfoWhenVisible}>
         {blog.title} {blog.author}
-        <button class='button' onClick={() => setBlogInfoVisible(true)}>
+        <button className='button' onClick={() => setBlogInfoVisible(true)}>
           view
         </button>
       </div>
       <div style={showInfoWhenVisible}>
         <div>
           {blog.title} {blog.author}
-          <button class='button' onClick={() => setBlogInfoVisible(false)}>
+          <button className='button' onClick={() => setBlogInfoVisible(false)}>
             hide
           </button>
         </div>
@@ -58,6 +60,13 @@ const Blog = ({blog, likeBlog, loggedUser, deleteBlog}) => {
       </div>
     </div>
   )
+})
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  likeBlog: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
 }
 
 export default Blog

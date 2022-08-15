@@ -6,16 +6,18 @@ const BlogForm = forwardRef((props, ref) => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
+  const [createBlog, blogCreated] = [props.createBlog, props.blogCreated]
+
   const handleCreateBlog = async (event) => {
     event.preventDefault()
 
     console.log('create button pushed')
-    const newBlog = await props.createBlog(title, author, url)
+    const newBlog = await createBlog(title, author, url)
     if (newBlog === true) {
       setTitle('')
       setAuthor('')
       setUrl('')
-      props.blogCreated(title, author)
+      blogCreated(title, author)
     }
   }
 

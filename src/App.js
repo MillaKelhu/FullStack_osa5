@@ -193,7 +193,7 @@ const App = () => {
       <h2>blogs</h2>
       <p>
         {user.name} logged in
-        <button class='button' onClick={handleLogout}>
+        <button className='button' onClick={handleLogout}>
           logout
         </button>
       </p>
@@ -204,7 +204,8 @@ const App = () => {
         blog={blog}
         likeBlog={likeBlog}
         loggedUser={user}
-        deleteBlog={deleteBlog}/>
+        deleteBlog={deleteBlog}
+      />
       )}
     </div>
   )
