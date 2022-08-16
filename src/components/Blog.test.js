@@ -7,6 +7,9 @@ import Blog from './Blog'
 describe('<Blog />', () => {
   let container
 
+  const mockLikeHandler = jest.fn()
+  const mockDeleteHandler = jest.fn()
+
   const blog = {
     title: 'Component testing',
     author: 'Guess Who',
@@ -21,15 +24,15 @@ describe('<Blog />', () => {
     id: 101010
   }
 
-  const likeBlog = () => {}
-  const deleteBlog = () => {}
-
   beforeEach(() => {
+    mockLikeHandler.mockReset()
+    mockDeleteHandler.mockReset()
+
     container = render(<Blog
       blog={blog}
-      likeBlog={likeBlog}
+      likeBlog={mockLikeHandler}
       loggedUser={loggedUser}
-      deleteBlog={deleteBlog}/>).container
+      deleteBlog={mockDeleteHandler}/>).container
   })
 
   test('component is rendered', () => {
@@ -48,5 +51,14 @@ describe('<Blog />', () => {
 
     const div = container.querySelector('.optionalContent')
     expect(div).not.toHaveStyle('display:none')
+  })
+
+  test('clicking the like button twice calls the event handler twice', async () => {
+    const user = userEvent.setup()
+    const button = screen.getByText('like')
+    await user.click(button)
+    await user.click(button)
+
+    expect(mockLikeHandler.mock.calls).toHaveLength(2)
   })
 })
