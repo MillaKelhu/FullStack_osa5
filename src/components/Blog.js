@@ -40,7 +40,7 @@ const Blog = forwardRef((props, ref) => {
             view
         </button>
       </div>
-      <div style={showInfoWhenVisible}>
+      <div style={showInfoWhenVisible} className='optionalContent'>
         <div>
           {blog.title} {blog.author}
           <button className='button' onClick={() => setBlogInfoVisible(false)}>
@@ -65,7 +65,7 @@ const Blog = forwardRef((props, ref) => {
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   likeBlog: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
+  loggedUser: PropTypes.object.isRequired,
   deleteBlog: PropTypes.func.isRequired,
 }
 
