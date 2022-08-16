@@ -156,7 +156,7 @@ const App = () => {
         <h2>Log in to application</h2>
         <form onSubmit={handleLogin} autoComplete="off">
           <div>
-                        username
+            username
             <input
               type="text"
               value={username}
@@ -165,7 +165,7 @@ const App = () => {
             />
           </div>
           <div>
-                        password
+            password
             <input
               type="password"
               value={password}
@@ -174,7 +174,7 @@ const App = () => {
             />
           </div>
           <button type="submit">
-                        login
+            login
           </button>
         </form>
       </div>
