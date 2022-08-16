@@ -70,12 +70,15 @@ const App = () => {
       await blogService.create({
         title, author, url
       })
+      setNotificationMessage(`a new blog ${title} by ${author} added`)
+      notificationTimeout()
+      setCreateBlogVisible(false)
+      blogHook()
       return true
     } catch (exception) {
       console.log('error in creating a new blog')
       setErrorMessage(`couldn't create a blog ${title} by ${author}`)
       errorTimeout()
-      return false
     }
   }
 
@@ -89,13 +92,6 @@ const App = () => {
     setTimeout(() => {
       setErrorMessage(null)
     }, 5000)
-  }
-
-  const blogCreated = (title, author) => {
-    setNotificationMessage(`a new blog ${title} by ${author} added`)
-    notificationTimeout()
-    setCreateBlogVisible(false)
-    blogHook()
   }
 
   const likeBlog = async (blog) => {
@@ -143,7 +139,6 @@ const App = () => {
         <div style={showWhenVisible}>
           <BlogForm
             createBlog={addBlog}
-            blogCreated={blogCreated}
           />
           <button onClick={() => setCreateBlogVisible(false)}>
                       cancel

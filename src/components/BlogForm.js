@@ -6,7 +6,7 @@ const BlogForm = forwardRef((props, ref) => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const [createBlog, blogCreated] = [props.createBlog, props.blogCreated]
+  const createBlog = props.createBlog
 
   const handleCreateBlog = async (event) => {
     event.preventDefault()
@@ -17,7 +17,6 @@ const BlogForm = forwardRef((props, ref) => {
       setTitle('')
       setAuthor('')
       setUrl('')
-      blogCreated(title, author)
     }
   }
 
@@ -61,8 +60,7 @@ const BlogForm = forwardRef((props, ref) => {
 })
 
 BlogForm.propTypes = {
-  createBlog: PropTypes.func.isRequired,
-  blogCreated: PropTypes.func.isRequired
+  createBlog: PropTypes.func.isRequired
 }
 
 export default BlogForm
