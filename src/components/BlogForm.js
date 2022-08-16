@@ -25,7 +25,7 @@ const BlogForm = forwardRef((props, ref) => {
       <h2>create</h2>
       <form onSubmit={handleCreateBlog} autoComplete="off">
         <div>
-                    title:
+          title:
           <input
             type="text"
             value={title}
@@ -34,7 +34,7 @@ const BlogForm = forwardRef((props, ref) => {
           />
         </div>
         <div>
-                    author:
+          author:
           <input
             type="text"
             value={author}
@@ -43,7 +43,7 @@ const BlogForm = forwardRef((props, ref) => {
           />
         </div>
         <div>
-                    url:
+          url:
           <input
             type="text"
             value={url}
@@ -52,7 +52,7 @@ const BlogForm = forwardRef((props, ref) => {
           />
         </div>
         <button type="submit">
-                    create
+          create
         </button>
       </form>
     </div>
