@@ -34,19 +34,14 @@ const Blog = forwardRef((props, ref) => {
 
   return (
     <div className='blog'>
-      <div style={hideInfoWhenVisible}>
-        {blog.title} {blog.author}
-        <button className='button' onClick={() => setBlogInfoVisible(true)}>
-            view
-        </button>
-      </div>
+      {blog.title} {blog.author}
+      <button style={hideInfoWhenVisible} className='button' onClick={() => setBlogInfoVisible(true)}>
+        view
+      </button>
+      <button style={showInfoWhenVisible} className='button' onClick={() => setBlogInfoVisible(false)}>
+          hide
+      </button>
       <div style={showInfoWhenVisible} className='optionalContent'>
-        <div>
-          {blog.title} {blog.author}
-          <button className='button' onClick={() => setBlogInfoVisible(false)}>
-              hide
-          </button>
-        </div>
         <div>
           {blog.url}
         </div>

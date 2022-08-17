@@ -115,19 +115,18 @@ describe('Blog app', function() {
       })
 
       it('A blog can be liked', function() {
-        cy.get('div.blog')
-          .contains('License to Queer David Lowbrigde-Ellis')
-
-        cy.contains('view')
+        cy.contains('License to Queer David Lowbrigde-Ellis')
+          .contains('view')
           .click()
 
-        cy.get('div.blog')
+        cy.contains('License to Queer David Lowbrigde-Ellis')
           .contains('likes 0')
 
-        cy.contains('like')
+        cy.contains('License to Queer David Lowbrigde-Ellis')
+          .contains('like')
           .click()
 
-        cy.get('div.blog')
+        cy.contains('License to Queer David Lowbrigde-Ellis')
           .contains('likes 1')
       })
     })
