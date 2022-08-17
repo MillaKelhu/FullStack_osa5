@@ -104,21 +104,32 @@ describe('Blog app', function() {
           author: 'David Lowbrigde-Ellis',
           url: 'https://www.licencetoqueer.com/'
         }
+        const anotherNewBlog = {
+          title: 'Bond and Banter',
+          author: 'Jack Lugo',
+          url: 'https://bondandbanter.libsyn.com/'
+        }
         cy.request({
           method: 'POST',
           url: 'http://localhost:3003/api/blogs/',
           body: newBlog,
           headers: { Authorization: authorization } })
           .then(response => {
-            cy.visit('http://localhost:3000')
+            cy.request({
+              method: 'POST',
+              url: 'http://localhost:3003/api/blogs/',
+              body: anotherNewBlog,
+              headers: { Authorization: authorization } })
+              .then(response => {
+                cy.visit('http://localhost:3000')
+              })
           })
-
-        cy.contains('License to Queer David Lowbrigde-Ellis')
-          .contains('view')
-          .click()
       })
 
       it('A blog can be liked', function() {
+        cy.contains('License to Queer David Lowbrigde-Ellis')
+          .contains('view')
+          .click()
 
         cy.contains('License to Queer David Lowbrigde-Ellis')
           .contains('likes 0')
@@ -133,6 +144,10 @@ describe('Blog app', function() {
 
       it('A blog can be deleted', function() {
         cy.contains('License to Queer David Lowbrigde-Ellis')
+          .contains('view')
+          .click()
+
+        cy.contains('License to Queer David Lowbrigde-Ellis')
           .contains('remove')
           .click()
 
@@ -141,6 +156,38 @@ describe('Blog app', function() {
 
         cy.contains('License to Queer David Lowbrigde-Ellis')
           .should('not.exist')
+      })
+
+      it('A blog can only be deleted by its creator', function() {
+        const newUser = {
+          username: 'another-user',
+          name: 'Another Test User',
+          password: 'another password'
+        }
+        cy.request('POST', 'http://localhost:3003/api/users/', newUser)
+        cy.request('POST', 'http://localhost:3003/api/login',
+          {username: 'another-user', password: 'another password'}
+        ).then(response => {
+          localStorage.setItem('loggedBlogAppUser', JSON.stringify(response.body))
+          cy.visit('http://localhost:3000')
+        })
+
+        cy.contains('License to Queer David Lowbrigde-Ellis')
+          .contains('view')
+          .click()
+
+        cy.contains('License to Queer David Lowbrigde-Ellis')
+          .contains('remove')
+          .should('not.exist')
+
+        cy.contains('Bond and Banter Jack Lugo')
+          .contains('view')
+          .click()
+
+        cy.contains('Bond and Banter Jack Lugo')
+          .contains('remove')
+          .should('not.exist')
+
       })
     })
   })
