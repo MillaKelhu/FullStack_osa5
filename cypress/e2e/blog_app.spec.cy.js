@@ -109,6 +109,12 @@ describe('Blog app', function() {
           author: 'Jack Lugo',
           url: 'https://bondandbanter.libsyn.com/'
         }
+        const thirdNewBlog = {
+          title: 'BAMF Style',
+          author: 'Nick Guzan',
+          url: 'https://bamfstyle.com/'
+        }
+
         cy.request({
           method: 'POST',
           url: 'http://localhost:3003/api/blogs/',
@@ -121,7 +127,14 @@ describe('Blog app', function() {
               body: anotherNewBlog,
               headers: { Authorization: authorization } })
               .then(response => {
-                cy.visit('http://localhost:3000')
+                cy.request({
+                  method: 'POST',
+                  url: 'http://localhost:3003/api/blogs/',
+                  body: thirdNewBlog,
+                  headers: { Authorization: authorization } })
+                  .then(response => {
+                    cy.visit('http://localhost:3000')
+                  })
               })
           })
       })
@@ -156,6 +169,54 @@ describe('Blog app', function() {
 
         cy.contains('License to Queer David Lowbrigde-Ellis')
           .should('not.exist')
+      })
+
+      it('Blogs are in the order of likes', function() {
+        cy.contains('Bond and Banter Jack Lugo')
+          .contains('view')
+          .click()
+
+        cy.contains('BAMF Style Nick Guzan')
+          .contains('view')
+          .click()
+
+        cy.contains('BAMF Style Nick Guzan')
+          .contains('like')
+          .click()
+
+        cy.contains('BAMF Style Nick Guzan')
+          .contains('likes 1')
+          .click()
+
+        cy.get('div.blog')
+          .eq(0)
+          .should('contain', 'BAMF Style Nick Guzan')
+
+        cy.contains('Bond and Banter Jack Lugo')
+          .contains('like')
+          .click()
+
+        cy.contains('Bond and Banter Jack Lugo')
+          .contains('likes 1')
+
+        cy.contains('Bond and Banter Jack Lugo')
+          .contains('like')
+          .click()
+
+        cy.contains('Bond and Banter Jack Lugo')
+          .contains('likes 2')
+
+        cy.get('div.blog')
+          .eq(0)
+          .should('contain', 'Bond and Banter Jack Lugo')
+
+        cy.get('div.blog')
+          .eq(1)
+          .should('contain', 'BAMF Style Nick Guzan')
+
+        cy.get('div.blog')
+          .eq(2)
+          .should('contain', 'License to Queer David Lowbrigde-Ellis')
       })
 
       it('A blog can only be deleted by its creator', function() {
