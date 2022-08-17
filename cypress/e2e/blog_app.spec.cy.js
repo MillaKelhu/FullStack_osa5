@@ -112,12 +112,13 @@ describe('Blog app', function() {
           .then(response => {
             cy.visit('http://localhost:3000')
           })
-      })
 
-      it('A blog can be liked', function() {
         cy.contains('License to Queer David Lowbrigde-Ellis')
           .contains('view')
           .click()
+      })
+
+      it('A blog can be liked', function() {
 
         cy.contains('License to Queer David Lowbrigde-Ellis')
           .contains('likes 0')
@@ -128,6 +129,18 @@ describe('Blog app', function() {
 
         cy.contains('License to Queer David Lowbrigde-Ellis')
           .contains('likes 1')
+      })
+
+      it('A blog can be deleted', function() {
+        cy.contains('License to Queer David Lowbrigde-Ellis')
+          .contains('remove')
+          .click()
+
+        cy.get('div.notification')
+          .contains('blog License to Queer has been deleted')
+
+        cy.contains('License to Queer David Lowbrigde-Ellis')
+          .should('not.exist')
       })
     })
   })

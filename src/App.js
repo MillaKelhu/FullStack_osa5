@@ -120,6 +120,8 @@ const App = () => {
       try {
         console.log('attempting to remove blog')
         await blogService.remove({ blog })
+        setNotificationMessage(`blog ${blog.title} has been deleted`)
+        notificationTimeout()
         blogHook()
       } catch (exception) {
         setErrorMessage(`couldn't delete blog ${blog.title}`)
