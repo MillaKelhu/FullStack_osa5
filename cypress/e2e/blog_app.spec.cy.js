@@ -62,15 +62,12 @@ describe('Blog app', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
-      cy.get('input[name="Username"]')
-        .type('user')
-
-      cy.get('input[name="Password"]')
-        .type('password')
-
-      cy.get('button')
-        .contains('login')
-        .click()
+      cy.request('POST', 'http://localhost:3003/api/login',
+        {username: 'user', password: 'password'}
+      ).then(response => {
+        localStorage.setItem('loggedBlogAppUser', JSON.stringify(response.body))
+        cy.visit('http://localhost:3000')
+      })
     })
 
     it('A blog can be created', function() {
@@ -78,23 +75,61 @@ describe('Blog app', function() {
         .click()
 
       cy.get('input[name="Title"]')
-        .type('Blog title')
+        .type('James Bond food')
 
       cy.get('input[name="Author"]')
-        .type('Blog Author')
+        .type('Edward Biddulph')
 
       cy.get('input[name="Url"]')
-        .type('blogurl.com')
+        .type('https://jamesbondfood.com/')
 
       cy.get('button[type="submit"]')
         .contains('create')
         .click()
 
       cy.get('div.notification')
-        .contains('a new blog Blog title by Blog Author added')
+        .contains('a new blog James Bond food by Edward Biddulph added')
 
       cy.get('div.blog')
-        .contains('Blog title Blog Author')
+        .contains('James Bond food Edward Biddulph')
+    })
+
+    describe('When blogs have been created', function() {
+      beforeEach(function() {
+        const loggedUserJSON = localStorage.getItem('loggedBlogAppUser')
+        const user = JSON.parse(loggedUserJSON)
+        const authorization = `bearer ${user.token}`
+        const newBlog = {
+          title: 'License to Queer',
+          author: 'David Lowbrigde-Ellis',
+          url: 'https://www.licencetoqueer.com/'
+        }
+        cy.request({
+          method: 'POST',
+          url: 'http://localhost:3003/api/blogs/',
+          body: newBlog,
+          headers: { Authorization: authorization } })
+          .then(response => {
+            cy.visit('http://localhost:3000')
+          })
+      })
+
+      it('A blog can be liked', function() {
+        cy.get('div.blog')
+          .contains('License to Queer David Lowbrigde-Ellis')
+
+        cy.contains('view')
+          .click()
+
+        cy.get('div.blog')
+          .contains('likes 0')
+
+        cy.contains('like')
+          .click()
+
+        cy.get('div.blog')
+          .contains('likes 1')
+      })
     })
   })
 })
